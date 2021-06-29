@@ -1,0 +1,35 @@
+{
+    "tableName": "newsentiment",
+    "schemaName": "internship",
+    "objectName": "newsentiment",
+    "event": [{
+        "dataFormat": "csv",
+        "fields": [
+            {
+                "name": "Tweet_ID",
+                "mapping": "Tweet_ID",
+                "type": "BIGINT"
+            },
+            {
+                "name": "Sentiment_Label",
+                "mapping": "Sentiment_Label",
+                "type": "VARCHAR(25)"
+            },
+            {
+                "name": "Logits_Neutral",
+                "mapping": "Logits_Neutral",
+                "type": "DOUBLE"
+            },
+            {
+                "name": "Logits_Positive",
+                "mapping": "Logits_Positive",
+                "type": "DOUBLE"
+            },
+            {
+                "name": "Logits_Negative",
+                "mapping": "Logits_Negative",
+                "type": "DOUBLE"
+            }
+        ]
+    }]
+}

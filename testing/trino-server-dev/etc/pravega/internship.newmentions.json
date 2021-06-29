@@ -1,0 +1,20 @@
+{
+    "tableName": "newmentions",
+    "schemaName": "internship",
+    "objectName": "newmentions",
+    "event": [{
+        "dataFormat": "csv",
+        "fields": [
+            {
+                "name": "Tweet_ID",
+                "mapping": "Tweet_ID",
+                "type": "BIGINT"
+            },
+            {
+                "name": "Mentions",
+                "mapping": "Mentions",
+                "type": "VARCHAR"
+            }
+        ]
+    }]
+}

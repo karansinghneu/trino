@@ -1,0 +1,21 @@
+{
+    "tableName": "newhashtag",
+    "schemaName": "internship",
+    "objectName": "newhashtag",
+    "event": [{
+        "dataFormat": "csv",
+        "fields": [
+            {
+                "name": "Tweet_ID",
+                "mapping": "Tweet_ID",
+                "type": "BIGINT"
+            },
+            {
+                "name": "Hashtag",
+                "mapping": "Hashtag",
+                "type": "VARCHAR"
+            }
+            
+        ]
+    }]
+}
