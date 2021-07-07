@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.pravega.connectors.presto.integration;
+package io.trino.plugin.pravega.integration;
 
-import com.facebook.airlift.json.JsonCodec;
-import com.facebook.presto.common.QualifiedObjectName;
-import com.facebook.presto.tests.TestingPrestoClient;
+import io.airlift.json.JsonCodec;
+import io.trino.metadata.QualifiedObjectName;
+import io.trino.testing.TestingTrinoClient;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 import io.pravega.client.admin.StreamManager;
-import io.pravega.connectors.presto.PravegaStreamDescription;
-import io.pravega.connectors.presto.PravegaStreamFieldDescription;
-import io.pravega.connectors.presto.PravegaStreamFieldGroup;
+import io.trino.plugin.pravega.PravegaStreamDescription;
+import io.trino.plugin.pravega.PravegaStreamFieldDescription;
+import io.trino.plugin.pravega.PravegaStreamFieldGroup;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericRecordBuilder;
 
@@ -36,7 +36,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.pravega.connectors.presto.util.PravegaStreamDescUtils.mapFieldsFromSchema;
+import static io.trino.plugin.pravega.util.PravegaStreamDescUtils.mapFieldsFromSchema;
 import static java.lang.String.format;
 
 public final class PravegaTestUtils
@@ -63,7 +63,7 @@ public final class PravegaTestUtils
         }
     }
 
-    public static void loadTpchStream(URI controller, StreamManager streamManager, TestingPrestoClient prestoClient, String schema, String stream, QualifiedObjectName tpchTableName)
+    public static void loadTpchStream(URI controller, StreamManager streamManager, TestingTrinoClient prestoClient, String schema, String stream, QualifiedObjectName tpchTableName)
     {
         try (PravegaLoader tpchLoader = new PravegaLoader(controller, streamManager, schema, stream, prestoClient.getServer(), prestoClient.getDefaultSession())) {
             tpchLoader.execute(format("SELECT * from %s", tpchTableName));

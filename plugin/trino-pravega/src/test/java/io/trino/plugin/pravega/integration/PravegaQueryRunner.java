@@ -13,39 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.pravega.connectors.presto.integration;
+package io.trino.plugin.pravega.integration;
 
-import com.facebook.airlift.json.JsonCodec;
-import com.facebook.airlift.log.Logger;
-import com.facebook.airlift.log.Logging;
-import com.facebook.presto.Session;
-import com.facebook.presto.common.QualifiedObjectName;
-import com.facebook.presto.metadata.Metadata;
-import com.facebook.presto.spi.SchemaTableName;
-import com.facebook.presto.testing.QueryRunner;
-import com.facebook.presto.tests.DistributedQueryRunner;
-import com.facebook.presto.tests.TestingPrestoClient;
-import com.facebook.presto.tpch.TpchPlugin;
+import io.airlift.json.JsonCodec;
+import io.airlift.log.Logger;
+import io.airlift.log.Logging;
+import io.trino.Session;
+import io.trino.metadata.QualifiedObjectName;
+import io.trino.metadata.Metadata;
+import io.trino.spi.connector.SchemaTableName;
+import io.trino.testing.QueryRunner;
+import io.trino.testing.DistributedQueryRunner;
+import io.trino.testing.TestingTrinoClient;
+import io.trino.plugin.tpch.TpchPlugin;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableMap;
-import io.airlift.tpch.TpchTable;
+import io.trino.testing.tpch.IndexedTpchPlugin;
+import io.trino.tpch.TpchTable;
 import io.pravega.client.admin.StreamManager;
-import io.pravega.connectors.presto.PravegaPlugin;
-import io.pravega.connectors.presto.PravegaStreamDescription;
-import io.pravega.connectors.presto.PravegaTableDescriptionSupplier;
-import io.pravega.connectors.presto.PravegaTableName;
+import io.trino.plugin.pravega.PravegaPlugin;
+import io.trino.plugin.pravega.PravegaStreamDescription;
+import io.trino.plugin.pravega.PravegaTableDescriptionSupplier;
+import io.trino.plugin.pravega.PravegaTableName;
 
 import java.net.URI;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.facebook.airlift.testing.Closeables.closeAllSuppress;
-import static com.facebook.presto.testing.TestingSession.testSessionBuilder;
-import static com.facebook.presto.tpch.TpchMetadata.TINY_SCHEMA_NAME;
+import static io.airlift.testing.Closeables.closeAllSuppress;
+import static io.trino.testing.TestingSession.testSessionBuilder;
+import static io.trino.plugin.tpch.TpchMetadata.TINY_SCHEMA_NAME;
 import static io.airlift.units.Duration.nanosSince;
-import static io.pravega.connectors.presto.integration.PravegaTestUtils.getKvStreamDesc;
-import static io.pravega.connectors.presto.integration.PravegaTestUtils.getStreamDesc;
+import static io.trino.plugin.pravega.integration.PravegaTestUtils.getKvStreamDesc;
+import static io.trino.plugin.pravega.integration.PravegaTestUtils.getStreamDesc;
 import static java.util.Locale.ENGLISH;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -66,7 +67,17 @@ public final class PravegaQueryRunner
     {
         DistributedQueryRunner queryRunner = null;
         try {
-            queryRunner = new DistributedQueryRunner(createSession(), 2);
+//            Session session = testSessionBuilder()
+//                    .setCatalog("tpch_indexed")
+//                    .setSchema(TINY_SCHEMA_NAME)
+//                    .build();
+//
+//            DistributedQueryRunner queryRunner = DistributedQueryRunner.builder(session).build();
+//
+//            queryRunner.installPlugin(new IndexedTpchPlugin(INDEX_SPEC));
+//            queryRunner.createCatalog("tpch_indexed", "tpch_indexed");
+            queryRunner = DistributedQueryRunner.builder(createSession()).setNodeCount(2).build();
+//            queryRunner = new DistributedQueryRunner(createSession(), 2);
 
             queryRunner.installPlugin(new TpchPlugin());
             queryRunner.createCatalog("tpch", "tpch");
@@ -76,7 +87,7 @@ public final class PravegaQueryRunner
 
             installPlugin(controller, queryRunner, tableDescriptionSupplier);
 
-            TestingPrestoClient prestoClient = queryRunner.getClient();
+            TestingTrinoClient prestoClient = queryRunner.getClient();
 
             log.info("Loading data...");
             long startTime = System.nanoTime();
@@ -104,7 +115,7 @@ public final class PravegaQueryRunner
         }
     }
 
-    private static void loadTpchStream(URI controller, StreamManager streamManager, TestingPrestoClient prestoClient, TpchTable<?> table)
+    private static void loadTpchStream(URI controller, StreamManager streamManager, TestingTrinoClient prestoClient, TpchTable<?> table)
     {
         long start = System.nanoTime();
         log.info("Running import for %s", table.getTableName());

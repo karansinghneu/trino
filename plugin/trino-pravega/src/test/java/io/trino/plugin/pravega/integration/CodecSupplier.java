@@ -1,4 +1,6 @@
 /*
+ * Copyright (c) Dell Inc., or its subsidiaries. All Rights Reserved.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,6 +17,7 @@
  * (rev a8968160e1840ac67a5f63def27d31c0ef0acde7)
  * https://github.com/prestodb/presto/blob/0.247/presto-kafka/src/test/java/com/facebook/presto/kafka/util/CodecSupplier.java
  */
+
 package io.trino.plugin.pravega.integration;
 
 import io.airlift.json.JsonCodec;

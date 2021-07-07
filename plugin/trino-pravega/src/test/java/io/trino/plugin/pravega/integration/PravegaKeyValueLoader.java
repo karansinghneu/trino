@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.pravega.connectors.presto.integration;
+package io.trino.plugin.pravega.integration;
 
 import io.pravega.client.ClientConfig;
 import io.pravega.client.KeyValueTableFactory;
@@ -23,7 +23,7 @@ import io.pravega.client.stream.Serializer;
 import io.pravega.client.tables.KeyValueTable;
 import io.pravega.client.tables.KeyValueTableClientConfiguration;
 import io.pravega.client.tables.KeyValueTableConfiguration;
-import io.pravega.connectors.presto.util.ByteBufferInputStream;
+import io.trino.plugin.pravega.util.ByteBufferInputStream;
 import org.apache.avro.Schema;
 import org.apache.avro.file.DataFileStream;
 import org.apache.avro.file.DataFileWriter;

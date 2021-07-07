@@ -21,6 +21,7 @@ import com.google.inject.Binder;
 import com.google.inject.Scopes;
 import io.airlift.configuration.AbstractConfigurationAwareModule;
 import io.trino.decoder.DecoderModule;
+import io.trino.plugin.pravega.decoder.JsonRowDecoderFactory;
 import io.trino.spi.type.Type;
 import io.trino.spi.type.TypeManager;
 
@@ -48,6 +49,7 @@ public class PravegaConnectorModule
         binder.bind(PravegaRecordSetProvider.class).in(Scopes.SINGLETON);
 
         binder.bind(PravegaSegmentManager.class).in(Scopes.SINGLETON);
+        binder.bind(JsonRowDecoderFactory.class).in(Scopes.SINGLETON);
         configBinder(binder).bindConfig(PravegaConnectorConfig.class);
 
         jsonBinder(binder).addDeserializerBinding(Type.class).to(TypeDeserializer.class);

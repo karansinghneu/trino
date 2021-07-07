@@ -17,19 +17,20 @@
  * (rev a8968160e1840ac67a5f63def27d31c0ef0acde7)
  * https://github.com/prestodb/presto/blob/0.247/presto-kafka/src/test/java/com/facebook/presto/kafka/util/KafkaLoader.java
  */
-package io.pravega.connectors.presto.integration;
+package io.trino.plugin.pravega.integration;
 
-import com.facebook.presto.Session;
-import com.facebook.presto.client.Column;
-import com.facebook.presto.client.QueryData;
-import com.facebook.presto.client.QueryStatusInfo;
-import com.facebook.presto.common.type.TimeZoneKey;
-import com.facebook.presto.common.type.Type;
-import com.facebook.presto.common.type.Varchars;
-import com.facebook.presto.server.testing.TestingPrestoServer;
-import com.facebook.presto.spi.PrestoWarning;
-import com.facebook.presto.tests.AbstractTestingPrestoClient;
-import com.facebook.presto.tests.ResultsSession;
+import io.trino.Session;
+import io.trino.client.Column;
+import io.trino.client.QueryData;
+import io.trino.client.QueryStatusInfo;
+import io.trino.spi.type.TimeZoneKey;
+import io.trino.spi.type.Type;
+import io.trino.spi.type.VarcharType;
+import io.trino.spi.type.Varchars;
+import io.trino.server.testing.TestingTrinoServer;
+import io.trino.spi.TrinoWarning;
+import io.trino.testing.AbstractTestingTrinoClient;
+import io.trino.testing.ResultsSession;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
@@ -54,24 +55,24 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.facebook.presto.common.type.BigintType.BIGINT;
-import static com.facebook.presto.common.type.BooleanType.BOOLEAN;
-import static com.facebook.presto.common.type.DateTimeEncoding.unpackMillisUtc;
-import static com.facebook.presto.common.type.DateType.DATE;
-import static com.facebook.presto.common.type.DoubleType.DOUBLE;
-import static com.facebook.presto.common.type.IntegerType.INTEGER;
-import static com.facebook.presto.common.type.TimeType.TIME;
-import static com.facebook.presto.common.type.TimeWithTimeZoneType.TIME_WITH_TIME_ZONE;
-import static com.facebook.presto.common.type.TimestampType.TIMESTAMP;
-import static com.facebook.presto.common.type.TimestampWithTimeZoneType.TIMESTAMP_WITH_TIME_ZONE;
-import static com.facebook.presto.util.DateTimeUtils.parseTimeLiteral;
-import static com.facebook.presto.util.DateTimeUtils.parseTimestampWithTimeZone;
-import static com.facebook.presto.util.DateTimeUtils.parseTimestampWithoutTimeZone;
+import static io.trino.spi.type.BigintType.BIGINT;
+import static io.trino.spi.type.BooleanType.BOOLEAN;
+import static io.trino.spi.type.DateTimeEncoding.unpackMillisUtc;
+import static io.trino.spi.type.DateType.DATE;
+import static io.trino.spi.type.DoubleType.DOUBLE;
+import static io.trino.spi.type.IntegerType.INTEGER;
+import static io.trino.spi.type.TimeType.TIME;
+import static io.trino.spi.type.TimeWithTimeZoneType.TIME_WITH_TIME_ZONE;
+import static io.trino.spi.type.TimestampType.TIMESTAMP;
+import static io.trino.spi.type.TimestampWithTimeZoneType.TIMESTAMP_WITH_TIME_ZONE;
+//import static io.trino.type.DateTimeOperators.parseTimeLiteral;
+import static io.trino.type.DateTimes.parseTimestampWithTimeZone;
+//import static io.trino.type.DateTimes.parseTimestampWithoutTimeZone;
 import static com.google.common.base.Preconditions.checkState;
 import static java.util.Objects.requireNonNull;
 
 public class PravegaLoader
-        extends AbstractTestingPrestoClient<Void>
+        extends AbstractTestingTrinoClient<Void>
 {
     private static final DateTimeFormatter ISO8601_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
@@ -109,7 +110,7 @@ public class PravegaLoader
                          StreamManager streamManager,
                          String schema,
                          String stream,
-                         TestingPrestoServer prestoServer,
+                         TestingTrinoServer prestoServer,
                          Session defaultSession)
     {
         super(prestoServer, defaultSession);
@@ -150,8 +151,8 @@ public class PravegaLoader
             this.timeZoneKey = session.getTimeZoneKey();
         }
 
-        @Override
-        public void setWarnings(List<PrestoWarning> warnings) {}
+//        @Override
+//        public void setWarnings(List<TrinoWarning> warnings) {}
 
         @Override
         public void addResults(QueryStatusInfo statusInfo, QueryData data)
@@ -190,7 +191,7 @@ public class PravegaLoader
                 return null;
             }
 
-            if (BOOLEAN.equals(type) || Varchars.isVarcharType(type)) {
+            if (BOOLEAN.equals(type) || isVarcharType(type)) {
                 return value;
             }
             if (BIGINT.equals(type)) {
@@ -205,17 +206,22 @@ public class PravegaLoader
             if (DATE.equals(type)) {
                 return value;
             }
-            if (TIME.equals(type)) {
-                return ISO8601_FORMATTER.format(Instant.ofEpochMilli(parseTimeLiteral(timeZoneKey, (String) value)));
-            }
-            if (TIMESTAMP.equals(type)) {
-                return ISO8601_FORMATTER.format(Instant.ofEpochMilli(parseTimestampWithoutTimeZone(timeZoneKey, (String) value)));
-            }
-            if (TIME_WITH_TIME_ZONE.equals(type) || TIMESTAMP_WITH_TIME_ZONE.equals(type)) {
-                return ISO8601_FORMATTER.format(Instant.ofEpochMilli(unpackMillisUtc(parseTimestampWithTimeZone(timeZoneKey, (String) value))));
-            }
+//            if (TIME.equals(type)) {
+//                return ISO8601_FORMATTER.format(Instant.ofEpochMilli(parseTimeLiteral(timeZoneKey, (String) value)));
+//            }
+//            if (TIMESTAMP.equals(type)) {
+//                return ISO8601_FORMATTER.format(Instant.ofEpochMilli(parseTimestampWithoutTimeZone(timeZoneKey, (String) value)));
+//            }
+//            if (TIME_WITH_TIME_ZONE.equals(type) || TIMESTAMP_WITH_TIME_ZONE.equals(type)) {
+//                return ISO8601_FORMATTER.format(Instant.ofEpochMilli(unpackMillisUtc(parseTimestampWithTimeZone(timeZoneKey, (String) value))));
+//            }
             throw new AssertionError("unhandled type: " + type);
         }
+    }
+
+    private static boolean isVarcharType(Type type)
+    {
+        return type instanceof VarcharType;
     }
 
     @Override

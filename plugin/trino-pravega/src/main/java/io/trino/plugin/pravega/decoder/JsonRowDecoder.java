@@ -16,23 +16,69 @@
 
 package io.trino.plugin.pravega.decoder;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.MissingNode;
+import com.google.common.base.Splitter;
+import io.trino.decoder.DecoderColumnHandle;
+import io.trino.decoder.FieldValueProvider;
+import io.trino.decoder.json.JsonFieldDecoder;
 import io.trino.plugin.pravega.PravegaRecordValue;
+import io.trino.plugin.pravega.TypedRecordValue;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import static com.google.common.base.Preconditions.checkState;
 // import io.trino.plugin.pravega.TypedRecordValue;
 
 public class JsonRowDecoder
         implements EventDecoder
 {
-    private final JsonRowDecoder jsonRowDecoder;
+    private final ObjectMapper objectMapper;
 
-    public JsonRowDecoder(JsonRowDecoder jsonRowDecoder)
+    private final Map<DecoderColumnHandle, JsonFieldDecoder> fieldDecoders;
+
+    public JsonRowDecoder(ObjectMapper objectMapper, Map<DecoderColumnHandle, JsonFieldDecoder> fieldDecoders)
     {
-        this.jsonRowDecoder = jsonRowDecoder;
+        this.objectMapper = objectMapper;
+        this.fieldDecoders = fieldDecoders;
     }
 
     @Override
     public boolean decodeEvent(DecodableEvent event, PravegaRecordValue record)
     {
-        // ((TypedRecordValue) record).setDecodedValue(jsonRowDecoder.decodeTree(event.asJson()));
+        ((TypedRecordValue) record).setDecodedValue(decodeTree(event.asJson()));
         return true;
+    }
+
+    public Optional<Map<DecoderColumnHandle, FieldValueProvider>> decodeTree(JsonNode tree)
+    {
+        Map<DecoderColumnHandle, FieldValueProvider> decodedRow = new HashMap<>();
+
+        for (Map.Entry<DecoderColumnHandle, JsonFieldDecoder> entry : fieldDecoders.entrySet()) {
+            DecoderColumnHandle columnHandle = entry.getKey();
+            JsonFieldDecoder decoder = entry.getValue();
+            JsonNode node = locateNode(tree, columnHandle);
+            decodedRow.put(columnHandle, decoder.decode(node));
+        }
+
+        return Optional.of(decodedRow);
+    }
+
+    private static JsonNode locateNode(JsonNode tree, DecoderColumnHandle columnHandle)
+    {
+        String mapping = columnHandle.getMapping();
+        checkState(mapping != null, "No mapping for %s", columnHandle.getName());
+
+        JsonNode currentNode = tree;
+        for (String pathElement : Splitter.on('/').omitEmptyStrings().split(mapping)) {
+            if (!currentNode.has(pathElement)) {
+                return MissingNode.getInstance();
+            }
+            currentNode = currentNode.path(pathElement);
+        }
+        return currentNode;
     }
 }

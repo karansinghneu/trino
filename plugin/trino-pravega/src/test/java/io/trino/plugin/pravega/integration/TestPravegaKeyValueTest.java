@@ -13,30 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.pravega.connectors.presto.integration;
+package io.trino.plugin.pravega.integration;
 
-import com.facebook.presto.Session;
-import com.facebook.presto.testing.MaterializedResult;
-import com.facebook.presto.tests.DistributedQueryRunner;
-import io.pravega.connectors.presto.PravegaStreamDescription;
-import io.pravega.connectors.presto.PravegaStreamFieldDescription;
+import io.trino.Session;
+import io.trino.testing.MaterializedResult;
+import io.trino.testing.DistributedQueryRunner;
+import io.trino.plugin.pravega.PravegaStreamDescription;
+import io.trino.plugin.pravega.PravegaStreamFieldDescription;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
-import static com.facebook.presto.testing.TestingSession.testSessionBuilder;
-import static io.pravega.connectors.presto.integration.PravegaTestUtils.getKvStreamDesc;
+import static io.trino.testing.TestingSession.testSessionBuilder;
+import static io.trino.plugin.pravega.integration.PravegaTestUtils.getKvStreamDesc;
 import static org.testng.Assert.assertEquals;
 
 @Test
-public class PravegaKeyValueTest
+public class TestPravegaKeyValueTest
 {
     private final EmbeddedPravega pravega;
 
     private final DistributedQueryRunner queryRunner;
 
-    public PravegaKeyValueTest()
+    public TestPravegaKeyValueTest()
             throws Exception
     {
         this.pravega = new EmbeddedPravega();

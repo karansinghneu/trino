@@ -27,6 +27,7 @@ import io.trino.plugin.pravega.decoder.CsvRowDecoder;
 import io.trino.plugin.pravega.decoder.CsvSerializer;
 import io.trino.plugin.pravega.decoder.EventDecoder;
 import io.trino.plugin.pravega.decoder.JsonRowDecoder;
+import io.trino.plugin.pravega.decoder.JsonRowDecoderFactory;
 import io.trino.plugin.pravega.decoder.JsonSerializer;
 import io.trino.plugin.pravega.decoder.KVSerializer;
 import io.trino.plugin.pravega.decoder.MultiSourceRowDecoder;
@@ -68,25 +69,22 @@ public class PravegaRecordSetProvider
         implements ConnectorRecordSetProvider
 {
     private static final Logger log = Logger.get(PravegaRecordSetProvider.class);
-    private DispatchingRowDecoderFactory decoderFactory;
+    private JsonRowDecoderFactory jsonRowDecoderFactory;
     private final PravegaSegmentManager streamReaderManager;
-    private final PravegaConnectorConfig config;
 
     @Inject
-    public PravegaRecordSetProvider(DispatchingRowDecoderFactory decoderFactory,
-                                    PravegaSegmentManager streamReaderManager,
-                                    PravegaConnectorConfig config)
+    public PravegaRecordSetProvider(JsonRowDecoderFactory jsonRowDecoderFactory,
+            PravegaSegmentManager streamReaderManager)
     {
-        this.decoderFactory = requireNonNull(decoderFactory, "decoderFactory is null");
+        this.jsonRowDecoderFactory = requireNonNull(jsonRowDecoderFactory, "jsonRowDecoderFactory is null");
         this.streamReaderManager = requireNonNull(streamReaderManager, "streamReaderManager is null");
-        this.config = requireNonNull(config, "config is null");
     }
 
     @Override
     public RecordSet getRecordSet(ConnectorTransactionHandle transaction,
-                                  ConnectorSession session,
-                                  ConnectorSplit split,
-                                  List<? extends ColumnHandle> columns)
+            ConnectorSession session,
+            ConnectorSplit split,
+            List<? extends ColumnHandle> columns)
     {
         final PravegaSplit pravegaSplit = convertSplit(split);
 
@@ -208,16 +206,8 @@ public class PravegaRecordSetProvider
                 return new ProtobufRowDecoder(decoderColumnHandles);
 
             case JSON:
-            case JSON_INLINE: {
-                RowDecoder rowDecoder = decoderFactory.create(
-                        JSON,
-                        getDecoderParameters(schema.getSchemaLocation()),
-                        decoderColumnHandles);
-                if (!(rowDecoder instanceof JsonRowDecoder)) {
-                    throw new IllegalStateException();
-                }
-                return new JsonRowDecoder((JsonRowDecoder) rowDecoder);
-            }
+            case JSON_INLINE:
+                return jsonRowDecoderFactory.create(decoderColumnHandles);
 
             case CSV: {
                 return new CsvRowDecoder();
@@ -225,12 +215,5 @@ public class PravegaRecordSetProvider
             default:
                 throw new IllegalArgumentException(schema.toString());
         }
-    }
-
-    private static Map<String, String> getDecoderParameters(Optional<String> dataSchema)
-    {
-        ImmutableMap.Builder<String, String> parameters = ImmutableMap.builder();
-        dataSchema.ifPresent(schema -> parameters.put("dataSchema", schema));
-        return parameters.build();
     }
 }
