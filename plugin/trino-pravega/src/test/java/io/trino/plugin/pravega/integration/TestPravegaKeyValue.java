@@ -30,13 +30,13 @@ import static io.trino.plugin.pravega.integration.PravegaTestUtils.getKvStreamDe
 import static org.testng.Assert.assertEquals;
 
 @Test
-public class TestPravegaKeyValueTest
+public class TestPravegaKeyValue
 {
     private final EmbeddedPravega pravega;
 
     private final DistributedQueryRunner queryRunner;
 
-    public TestPravegaKeyValueTest()
+    public TestPravegaKeyValue()
             throws Exception
     {
         this.pravega = new EmbeddedPravega();

@@ -139,7 +139,7 @@ public final class PravegaTableHandle
     @Override
     public int hashCode()
     {
-        return Objects.hash(connectorId, schemaName, tableName, objectName, objectType, schema);
+        return Objects.hash(connectorId, schemaName, tableName, objectName, objectType, schema, schemaRegistryGroupId);
     }
 
     @Override
@@ -158,7 +158,8 @@ public final class PravegaTableHandle
                 && Objects.equals(this.tableName, other.tableName)
                 && Objects.equals(this.objectName, other.objectName)
                 && Objects.equals(this.objectType, other.objectType)
-                && Objects.equals(this.schema, other.schema);
+                && Objects.equals(this.schema, other.schema)
+                && Objects.equals(this.schemaRegistryGroupId, other.schemaRegistryGroupId);
     }
 
     @Override

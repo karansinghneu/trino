@@ -25,7 +25,7 @@ import static io.airlift.testing.Assertions.assertInstanceOf;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static org.testng.Assert.assertNotNull;
 
-public class PravegaPluginTest
+public class TestPravegaPlugin
 {
     @Test
     public void testSpinup()

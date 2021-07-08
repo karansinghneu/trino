@@ -20,6 +20,8 @@ import io.trino.spi.connector.ConnectorTableLayoutHandle;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Objects;
+
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static java.util.Objects.requireNonNull;
 
@@ -47,5 +49,24 @@ public class PravegaTableLayoutHandle
         return toStringHelper(this)
                 .add("table", table.toString())
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        PravegaTableLayoutHandle that = (PravegaTableLayoutHandle) o;
+        return Objects.equals(this.table, that.table);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(table);
     }
 }

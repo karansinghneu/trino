@@ -24,12 +24,12 @@ import org.testng.annotations.Test;
 import static io.trino.testing.TestingSession.testSessionBuilder;
 
 @Test
-public class TestPravegaDistributedTest
+public class TestPravegaDistributed
         extends AbstractTestQueries
 {
     private final EmbeddedPravega pravega;
 
-    public TestPravegaDistributedTest()
+    public TestPravegaDistributed()
             throws Exception
     {
         this(new EmbeddedPravega());
@@ -58,7 +58,7 @@ public class TestPravegaDistributedTest
 //        return queryRunner;
 //    }
 
-    public TestPravegaDistributedTest(EmbeddedPravega pravega)
+    public TestPravegaDistributed(EmbeddedPravega pravega)
     {
 //        super(() -> PravegaQueryRunner.createQueryRunner(pravega.getController(), TpchTable.getTables(), java.util.Collections.emptyList()));
         this.pravega = pravega;
