@@ -19,6 +19,9 @@ package io.trino.plugin.pravega;
 import com.google.common.collect.ImmutableList;
 import io.airlift.log.Logger;
 import io.pravega.client.batch.SegmentRange;
+import io.trino.spi.HostAddress;
+import io.trino.spi.Node;
+import io.trino.spi.NodeManager;
 import io.trino.spi.TrinoException;
 import io.trino.spi.connector.ConnectorSession;
 import io.trino.spi.connector.ConnectorSplit;
@@ -54,16 +57,19 @@ public class PravegaSplitManager
     private final String connectorId;
     private final PravegaConnectorConfig pravegaConnectorConfig;
     private final PravegaSegmentManager streamReaderManager;
+    private final NodeManager nodeManager;
 
     @Inject
     public PravegaSplitManager(
             PravegaConnectorId connectorId,
             PravegaConnectorConfig pravegaConnectorConfig,
-            PravegaSegmentManager streamReaderManager)
+            PravegaSegmentManager streamReaderManager,
+            NodeManager nodeManager)
     {
         this.connectorId = requireNonNull(connectorId, "connectorId is null").toString();
         this.streamReaderManager = requireNonNull(streamReaderManager, "streamReaderManager is null");
         this.pravegaConnectorConfig = requireNonNull(pravegaConnectorConfig, "pravegaConnectorConfig is null");
+        this.nodeManager = requireNonNull(nodeManager, "nodeManager is null");
     }
 
     @Override
@@ -111,6 +117,15 @@ public class PravegaSplitManager
         }
     }
 
+    private List<HostAddress> getNodeAddresses()
+    {
+        ImmutableList.Builder<HostAddress> addresses = ImmutableList.builder();
+        for (Node node : nodeManager.getRequiredWorkerNodes()) {
+                addresses.add(node.getHostAndPort());
+            }
+        return addresses.build();
+    }
+
     private void buildKVSplits(PravegaTableHandle pravegaTableHandle, ImmutableList.Builder<ConnectorSplit> splits)
     {
         pravegaTableHandle.getOjectArgs().orElseThrow(() ->
@@ -123,7 +138,8 @@ public class PravegaSplitManager
                             pravegaTableHandle.getSchema(),
                             ReaderType.KVT,
                             serialize(new PravegaKVTable(pravegaTableHandle.getSchemaName(), pravegaTableHandle.getObjectName(), kf)),
-                            pravegaTableHandle.getSchemaRegistryGroupId());
+                            pravegaTableHandle.getSchemaRegistryGroupId(),
+                            getNodeAddresses());
             splits.add(split);
         }
 
@@ -196,7 +212,8 @@ public class PravegaSplitManager
                     Collections.singletonList(tableHandle.getSchema().get(0)),
                     readerType,
                     serialize(new ReaderArgs(tableHandle.getSchemaName(), stream, range, null)),
-                    tableHandle.getSchemaRegistryGroupId());
+                    tableHandle.getSchemaRegistryGroupId(),
+                    getNodeAddresses());
         };
     }
 
@@ -283,7 +300,8 @@ public class PravegaSplitManager
                     Collections.singletonList(tableHandle.getSchema().get(0)),
                     readerType,
                     serialize(segmentRange),
-                    tableHandle.getSchemaRegistryGroupId());
+                    tableHandle.getSchemaRegistryGroupId(),
+                    getNodeAddresses());
         };
     }
 }

@@ -41,6 +41,7 @@ public class PravegaSplit
     private final ReaderType readerType;
     private final byte[] readerArgs;
     private final String schemaRegistryGroupId;
+    private final List<HostAddress> addresses;
 
     @JsonCreator
     public PravegaSplit(
@@ -49,7 +50,8 @@ public class PravegaSplit
             @JsonProperty("schema") List<PravegaObjectSchema> schema,
             @JsonProperty("readerType") ReaderType readerType,
             @JsonProperty("readerArgs") byte[] readerArgs,
-            @JsonProperty("schemaRegistryGroupId") String schemaRegistryGroupId)
+            @JsonProperty("schemaRegistryGroupId") String schemaRegistryGroupId,
+            @JsonProperty("addresses") List<HostAddress> addresses)
     {
         this.connectorId = requireNonNull(connectorId, "connector id is null");
         this.objectType = requireNonNull(objectType, "objectType is null");
@@ -57,6 +59,7 @@ public class PravegaSplit
         this.readerType = requireNonNull(readerType, "readerType is null");
         this.readerArgs = requireNonNull(readerArgs, "readerArgs is null");
         this.schemaRegistryGroupId = requireNonNull(schemaRegistryGroupId, "schemaRegistryGroupId is null");
+        this.addresses = requireNonNull(addresses, "addresses is null");
     }
 
     @JsonProperty
@@ -113,10 +116,10 @@ public class PravegaSplit
         return false;
     }
 
-    @Override
+    @JsonProperty
     public List<HostAddress> getAddresses()
     {
-        return ImmutableList.of();
+        return addresses;
     }
 
     @Override

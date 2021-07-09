@@ -1,3 +1,0 @@
-{ "first_name": "Fred","last_name":{"name":"Flinstone"}, "address": "123 Bedrock Lane", "num_of_patents": 10}
-{ "first_name": "Scooby","last_name":"Doo", "address": "111 Mystery Machine", "num_of_patents": 1000}
-{ "first_name": "Johnny","last_name":"Quest", "address": "52 main St", "num_of_patents": 0}
