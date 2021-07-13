@@ -17,16 +17,14 @@
 package io.trino.plugin.pravega;
 
 import io.airlift.log.Logger;
+import io.pravega.schemaregistry.serializer.shared.impl.SerializerConfig;
 import io.trino.decoder.DecoderColumnHandle;
-import io.trino.decoder.DispatchingRowDecoderFactory;
-import io.trino.decoder.RowDecoder;
 import io.trino.plugin.pravega.decoder.AvroRowDecoder;
 import io.trino.plugin.pravega.decoder.AvroSerializer;
 import io.trino.plugin.pravega.decoder.BytesEventDecoder;
 import io.trino.plugin.pravega.decoder.CsvRowDecoder;
 import io.trino.plugin.pravega.decoder.CsvSerializer;
 import io.trino.plugin.pravega.decoder.EventDecoder;
-import io.trino.plugin.pravega.decoder.JsonRowDecoder;
 import io.trino.plugin.pravega.decoder.JsonRowDecoderFactory;
 import io.trino.plugin.pravega.decoder.JsonSerializer;
 import io.trino.plugin.pravega.decoder.KVSerializer;
@@ -34,23 +32,20 @@ import io.trino.plugin.pravega.decoder.MultiSourceRowDecoder;
 import io.trino.plugin.pravega.decoder.ProtobufRowDecoder;
 import io.trino.plugin.pravega.decoder.ProtobufSerializer;
 import io.trino.spi.connector.ColumnHandle;
+import io.trino.spi.connector.ConnectorRecordSetProvider;
 import io.trino.spi.connector.ConnectorSession;
 import io.trino.spi.connector.ConnectorSplit;
-import io.trino.spi.connector.RecordSet;
-import io.trino.spi.connector.ConnectorRecordSetProvider;
 import io.trino.spi.connector.ConnectorTransactionHandle;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import io.pravega.schemaregistry.serializer.shared.impl.SerializerConfig;
+import io.trino.spi.connector.RecordSet;
 
 import javax.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
+import static com.google.common.collect.ImmutableSet.toImmutableSet;
 import static io.trino.plugin.pravega.PravegaHandleResolver.convertSplit;
 import static io.trino.plugin.pravega.util.PravegaSchemaUtils.AVRO;
 import static io.trino.plugin.pravega.util.PravegaSchemaUtils.AVRO_INLINE;
@@ -59,7 +54,6 @@ import static io.trino.plugin.pravega.util.PravegaSchemaUtils.JSON;
 import static io.trino.plugin.pravega.util.PravegaSchemaUtils.JSON_INLINE;
 import static io.trino.plugin.pravega.util.PravegaSchemaUtils.PROTOBUF;
 import static io.trino.plugin.pravega.util.PravegaSchemaUtils.PROTOBUF_INLINE;
-import static com.google.common.collect.ImmutableSet.toImmutableSet;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -90,7 +84,7 @@ public class PravegaRecordSetProvider
 
         List<PravegaColumnHandle> pravegaColumns = columns.stream()
                 .map(PravegaHandleResolver::convertColumnHandle)
-                .collect(ImmutableList.toImmutableList());
+                .collect(toImmutableList());
 
         SerializerConfig serializerConfig =
                 streamReaderManager.serializerConfig(pravegaSplit.getschemaRegistryGroupId());

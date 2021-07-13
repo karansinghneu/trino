@@ -21,8 +21,6 @@ import io.trino.tpch.TpchTable;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
-import static io.trino.testing.TestingSession.testSessionBuilder;
-
 @Test
 public class TestPravegaDistributed
         extends AbstractTestQueries

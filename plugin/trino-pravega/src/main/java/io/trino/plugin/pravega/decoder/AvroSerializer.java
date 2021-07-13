@@ -16,11 +16,11 @@
 
 package io.trino.plugin.pravega.decoder;
 
-import io.trino.plugin.pravega.util.ByteBufferInputStream;
 import com.google.protobuf.DynamicMessage;
 import io.pravega.client.stream.Serializer;
 import io.pravega.schemaregistry.serializer.shared.impl.SerializerConfig;
 import io.pravega.schemaregistry.serializers.SerializerFactory;
+import io.trino.plugin.pravega.util.ByteBufferInputStream;
 import org.apache.avro.Schema;
 import org.apache.avro.file.DataFileStream;
 import org.apache.avro.generic.GenericDatumReader;

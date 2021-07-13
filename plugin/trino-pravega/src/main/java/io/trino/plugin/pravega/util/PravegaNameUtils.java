@@ -16,10 +16,10 @@
 
 package io.trino.plugin.pravega.util;
 
+import io.pravega.shared.NameUtils;
 import io.trino.plugin.pravega.ObjectType;
 import io.trino.plugin.pravega.PravegaStreamDescription;
 import io.trino.plugin.pravega.PravegaTableHandle;
-import io.pravega.shared.NameUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +35,7 @@ public class PravegaNameUtils
     // used for prefixing field names when presenting them in presto
     // will default to these prefixes for kv table fields unless specified in user config
     static Map<Integer, String> kvFieldNamePrefixMap = new HashMap<>();
+
     static
     {
         kvFieldNamePrefixMap.put(0, "key");

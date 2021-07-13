@@ -16,9 +16,9 @@
 
 package io.trino.plugin.pravega;
 
-import io.trino.spi.connector.ConnectorTableLayoutHandle;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.trino.spi.connector.ConnectorTableLayoutHandle;
 
 import java.util.Objects;
 

@@ -20,14 +20,14 @@
 
 package io.trino.plugin.pravega.integration;
 
-import io.airlift.json.JsonCodec;
-import io.airlift.json.JsonCodecFactory;
-import io.airlift.json.ObjectMapperProvider;
-import io.trino.spi.type.Type;
-import io.trino.metadata.Metadata;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.FromStringDeserializer;
 import com.google.common.collect.ImmutableMap;
+import io.airlift.json.JsonCodec;
+import io.airlift.json.JsonCodecFactory;
+import io.airlift.json.ObjectMapperProvider;
+import io.trino.metadata.Metadata;
+import io.trino.spi.type.Type;
 
 import java.util.HashSet;
 import java.util.function.Supplier;

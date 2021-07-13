@@ -16,11 +16,12 @@
 
 package io.trino.plugin.pravega;
 
-import com.google.common.base.Preconditions;
 import io.airlift.slice.Slice;
 import io.airlift.slice.Slices;
 
 import java.nio.ByteBuffer;
+
+import static com.google.common.base.Preconditions.checkState;
 
 // csv, tsv, etc
 public class DelimRecordValue
@@ -94,25 +95,25 @@ public class DelimRecordValue
 
     public long getLong(int unused, int ordinalPosition)
     {
-        Preconditions.checkState(decoded);
+        checkState(decoded);
         return Long.parseLong(toString(ordinalPosition));
     }
 
     public double getDouble(int unused, int ordinalPosition)
     {
-        Preconditions.checkState(decoded);
+        checkState(decoded);
         return Double.parseDouble(toString(ordinalPosition));
     }
 
     public boolean getBoolean(int unused, int ordinalPosition)
     {
-        Preconditions.checkState(decoded);
+        checkState(decoded);
         return Boolean.getBoolean(toString(ordinalPosition));
     }
 
     public Slice getSlice(int unused, int ordinalPosition)
     {
-        Preconditions.checkState(decoded);
+        checkState(decoded);
         return Slices.wrappedBuffer(buf.array(), offset + position[ordinalPosition], fieldLen(ordinalPosition));
     }
 }

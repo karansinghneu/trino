@@ -16,18 +16,19 @@
 
 package io.trino.plugin.pravega;
 
+import io.airlift.slice.Slice;
 import io.trino.decoder.DecoderColumnHandle;
 import io.trino.decoder.FieldValueProvider;
 import io.trino.spi.connector.ColumnHandle;
-import com.google.common.base.Preconditions;
-import io.airlift.slice.Slice;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.google.common.base.Preconditions.checkState;
 // avro, protobuf, json
+
 public class TypedRecordValue
         implements PravegaRecordValue
 {
@@ -83,25 +84,25 @@ public class TypedRecordValue
 
     public long getLong(int field, int ordinalPosition)
     {
-        Preconditions.checkState(decoded);
+        checkState(decoded);
         return currentRowValues[field].getLong();
     }
 
     public double getDouble(int field, int ordinalPosition)
     {
-        Preconditions.checkState(decoded);
+        checkState(decoded);
         return currentRowValues[field].getDouble();
     }
 
     public boolean getBoolean(int field, int ordinalPosition)
     {
-        Preconditions.checkState(decoded);
+        checkState(decoded);
         return currentRowValues[field].getBoolean();
     }
 
     public Slice getSlice(int field, int ordinalPosition)
     {
-        Preconditions.checkState(decoded);
+        checkState(decoded);
         return currentRowValues[field].getSlice();
     }
 }

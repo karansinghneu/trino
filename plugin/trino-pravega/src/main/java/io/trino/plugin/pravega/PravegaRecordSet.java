@@ -16,15 +16,15 @@
 
 package io.trino.plugin.pravega;
 
+import com.google.common.collect.ImmutableList;
 import io.airlift.log.Logger;
-import io.trino.spi.type.Type;
+import io.pravega.client.batch.SegmentRange;
 import io.trino.decoder.DecoderColumnHandle;
 import io.trino.plugin.pravega.decoder.DecodableEvent;
 import io.trino.plugin.pravega.decoder.EventDecoder;
 import io.trino.spi.connector.RecordCursor;
 import io.trino.spi.connector.RecordSet;
-import com.google.common.collect.ImmutableList;
-import io.pravega.client.batch.SegmentRange;
+import io.trino.spi.type.Type;
 
 import java.util.Iterator;
 import java.util.List;

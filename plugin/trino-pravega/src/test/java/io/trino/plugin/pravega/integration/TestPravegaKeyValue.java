@@ -16,17 +16,17 @@
 package io.trino.plugin.pravega.integration;
 
 import io.trino.Session;
-import io.trino.testing.MaterializedResult;
-import io.trino.testing.DistributedQueryRunner;
 import io.trino.plugin.pravega.PravegaStreamDescription;
 import io.trino.plugin.pravega.PravegaStreamFieldDescription;
+import io.trino.testing.DistributedQueryRunner;
+import io.trino.testing.MaterializedResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
-import static io.trino.testing.TestingSession.testSessionBuilder;
 import static io.trino.plugin.pravega.integration.PravegaTestUtils.getKvStreamDesc;
+import static io.trino.testing.TestingSession.testSessionBuilder;
 import static org.testng.Assert.assertEquals;
 
 @Test

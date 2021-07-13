@@ -16,12 +16,12 @@
 
 package io.trino.plugin.pravega.decoder;
 
-import io.trino.plugin.pravega.util.ByteBufferInputStream;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.pravega.client.stream.Serializer;
 import io.pravega.schemaregistry.serializer.shared.impl.SerializerConfig;
 import io.pravega.schemaregistry.serializers.SerializerFactory;
+import io.trino.plugin.pravega.util.ByteBufferInputStream;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

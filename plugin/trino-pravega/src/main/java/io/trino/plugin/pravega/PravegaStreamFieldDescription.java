@@ -16,10 +16,10 @@
 
 package io.trino.plugin.pravega;
 
-import io.trino.spi.type.Type;
-import io.trino.spi.connector.ColumnMetadata;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.trino.spi.connector.ColumnMetadata;
+import io.trino.spi.type.Type;
 
 import java.util.Objects;
 

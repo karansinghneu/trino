@@ -17,16 +17,13 @@
 package io.trino.plugin.pravega;
 
 import com.google.common.annotations.VisibleForTesting;
-import io.airlift.json.JsonCodec;
-import io.airlift.log.Logger;
-import io.trino.spi.connector.SchemaTableName;
-import io.trino.spi.type.Type;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Streams;
-import com.google.protobuf.Descriptors;
+import io.airlift.json.JsonCodec;
+import io.airlift.log.Logger;
 import io.pravega.client.ClientConfig;
 import io.pravega.client.admin.StreamManager;
 import io.pravega.client.stream.Stream;
@@ -36,12 +33,7 @@ import io.pravega.schemaregistry.client.SchemaRegistryClientFactory;
 import io.pravega.schemaregistry.contract.data.GroupProperties;
 import io.pravega.schemaregistry.contract.data.SchemaWithVersion;
 import io.pravega.schemaregistry.contract.data.SerializationFormat;
-import io.pravega.schemaregistry.serializer.json.schemas.JSONSchema;
-import org.everit.json.schema.BooleanSchema;
-import org.everit.json.schema.NumberSchema;
-import org.everit.json.schema.ObjectSchema;
-import org.everit.json.schema.Schema;
-import org.everit.json.schema.StringSchema;
+import io.trino.spi.connector.SchemaTableName;
 
 import javax.inject.Inject;
 
@@ -56,34 +48,25 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static io.trino.plugin.pravega.util.PravegaStreamDescUtils.mapFieldsFromSchema;
-import static io.trino.spi.type.BigintType.BIGINT;
-import static io.trino.spi.type.BooleanType.BOOLEAN;
-import static io.trino.spi.type.DoubleType.DOUBLE;
-import static io.trino.spi.type.VarbinaryType.VARBINARY;
-import static io.trino.spi.type.VarcharType.createUnboundedVarcharType;
+import static io.trino.plugin.pravega.ProtobufCommon.encodeSchema;
 import static io.trino.plugin.pravega.util.PravegaNameUtils.groupId;
 import static io.trino.plugin.pravega.util.PravegaNameUtils.kvFieldMapping;
 import static io.trino.plugin.pravega.util.PravegaNameUtils.kvTable;
 import static io.trino.plugin.pravega.util.PravegaNameUtils.multiSourceStream;
 import static io.trino.plugin.pravega.util.PravegaNameUtils.temp_streamNameToTableName;
 import static io.trino.plugin.pravega.util.PravegaNameUtils.temp_tableNameToStreamName;
-import static io.trino.plugin.pravega.util.PravegaSchemaUtils.AVRO;
 import static io.trino.plugin.pravega.util.PravegaSchemaUtils.GROUP_PROPERTIES_INLINE_KEY;
 import static io.trino.plugin.pravega.util.PravegaSchemaUtils.GROUP_PROPERTIES_INLINE_KV_KEY;
 import static io.trino.plugin.pravega.util.PravegaSchemaUtils.GROUP_PROPERTIES_INLINE_KV_VALUE;
 import static io.trino.plugin.pravega.util.PravegaSchemaUtils.INLINE_SUFFIX;
-import static io.trino.plugin.pravega.util.PravegaSchemaUtils.NESTED_RECORD_SEPARATOR;
 import static io.trino.plugin.pravega.util.PravegaSchemaUtils.readSchema;
-import static io.trino.plugin.pravega.ProtobufCommon.encodeSchema;
+import static io.trino.plugin.pravega.util.PravegaStreamDescUtils.mapFieldsFromSchema;
 import static java.nio.file.Files.readAllBytes;
 import static java.util.Arrays.asList;
 import static java.util.Objects.requireNonNull;
-import static org.apache.avro.Schema.Type.RECORD;
 
 // pravega scope is a namespace for streams.  stream is unique within scope.
 // presto schema is like a database, with collection of tables.

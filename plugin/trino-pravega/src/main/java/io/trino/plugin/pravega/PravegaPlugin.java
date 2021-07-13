@@ -16,10 +16,10 @@
 
 package io.trino.plugin.pravega;
 
-import io.trino.spi.Plugin;
-import io.trino.spi.connector.ConnectorFactory;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
+import io.trino.spi.Plugin;
+import io.trino.spi.connector.ConnectorFactory;
 
 import java.util.Optional;
 

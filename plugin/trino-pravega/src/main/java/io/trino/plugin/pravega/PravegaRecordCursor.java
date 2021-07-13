@@ -17,20 +17,20 @@
 package io.trino.plugin.pravega;
 
 import io.airlift.log.Logger;
-import io.trino.spi.type.Type;
+import io.airlift.slice.Slice;
 import io.trino.plugin.pravega.decoder.DecodableEvent;
 import io.trino.plugin.pravega.decoder.EventDecoder;
 import io.trino.spi.connector.ColumnHandle;
 import io.trino.spi.connector.RecordCursor;
-import io.airlift.slice.Slice;
+import io.trino.spi.type.Type;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import static io.trino.plugin.pravega.util.PravegaSchemaUtils.CSV;
 import static com.google.common.base.Preconditions.checkArgument;
+import static io.trino.plugin.pravega.util.PravegaSchemaUtils.CSV;
 
 public class PravegaRecordCursor
         implements RecordCursor

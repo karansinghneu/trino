@@ -46,9 +46,10 @@ public final class EmbeddedPravega
 
     private final int controllerPort;
 
-    private final static AtomicInteger servers = new AtomicInteger();
+    private static final AtomicInteger servers = new AtomicInteger();
 
-    public EmbeddedPravega() throws Exception
+    public EmbeddedPravega()
+            throws Exception
     {
         int server = servers.getAndIncrement();
         this.controllerPort = 9090 + server;
@@ -82,8 +83,8 @@ public final class EmbeddedPravega
                 .passwd(PRAVEGA_PASSWORD)
                 .build();
 
-        this.embeddedPravega.setControllerPorts(new int[]{controllerPort});
-        this.embeddedPravega.setSegmentStorePorts(new int[]{hostPort});
+        this.embeddedPravega.setControllerPorts(new int[] {controllerPort});
+        this.embeddedPravega.setSegmentStorePorts(new int[] {hostPort});
         this.embeddedPravega.start();
     }
 
@@ -128,6 +129,7 @@ public final class EmbeddedPravega
         try {
             stop();
         }
-        catch (Exception quiet) {}
+        catch (Exception quiet) {
+        }
     }
 }

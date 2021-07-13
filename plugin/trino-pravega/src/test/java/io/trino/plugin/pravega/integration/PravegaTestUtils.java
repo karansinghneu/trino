@@ -15,15 +15,15 @@
  */
 package io.trino.plugin.pravega.integration;
 
-import io.airlift.json.JsonCodec;
-import io.trino.metadata.QualifiedObjectName;
-import io.trino.testing.TestingTrinoClient;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
+import io.airlift.json.JsonCodec;
 import io.pravega.client.admin.StreamManager;
+import io.trino.metadata.QualifiedObjectName;
 import io.trino.plugin.pravega.PravegaStreamDescription;
 import io.trino.plugin.pravega.PravegaStreamFieldDescription;
 import io.trino.plugin.pravega.PravegaStreamFieldGroup;
+import io.trino.testing.TestingTrinoClient;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericRecordBuilder;
 

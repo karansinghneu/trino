@@ -16,6 +16,7 @@
 
 package io.trino.plugin.pravega.decoder;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.trino.decoder.DecoderColumnHandle;
 import io.trino.decoder.json.CustomDateTimeJsonFieldDecoder;
 import io.trino.decoder.json.DefaultJsonFieldDecoder;
@@ -25,7 +26,6 @@ import io.trino.decoder.json.MillisecondsSinceEpochJsonFieldDecoder;
 import io.trino.decoder.json.RFC2822JsonFieldDecoder;
 import io.trino.decoder.json.SecondsSinceEpochJsonFieldDecoder;
 import io.trino.spi.TrinoException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.inject.Inject;
 
@@ -33,12 +33,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import static io.trino.spi.StandardErrorCode.GENERIC_USER_ERROR;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.ImmutableMap.toImmutableMap;
+import static io.trino.spi.StandardErrorCode.GENERIC_USER_ERROR;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.function.Function.identity;
+
 public class JsonRowDecoderFactory
 {
     private final ObjectMapper objectMapper;

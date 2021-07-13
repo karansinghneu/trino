@@ -121,8 +121,8 @@ public class PravegaSplitManager
     {
         ImmutableList.Builder<HostAddress> addresses = ImmutableList.builder();
         for (Node node : nodeManager.getRequiredWorkerNodes()) {
-                addresses.add(node.getHostAndPort());
-            }
+            addresses.add(node.getHostAndPort());
+        }
         return addresses.build();
     }
 
@@ -147,14 +147,14 @@ public class PravegaSplitManager
     }
 
     private void buildStreamSplits(final PravegaProperties properties,
-                                   PravegaTableHandle pravegaTableHandle,
-                                   ImmutableList.Builder<ConnectorSplit> splits)
+            PravegaTableHandle pravegaTableHandle,
+            ImmutableList.Builder<ConnectorSplit> splits)
     {
         // TODO: Enable begin and end cuts to be configurable: https://github.com/pravega/pravega-sql/issues/24
         List<String> sourceStreams = multiSourceStream(pravegaTableHandle)
                 ? pravegaTableHandle.getOjectArgs().orElseThrow(
-                        () -> new IllegalArgumentException("no args for multi source table found"))
-                : Collections.singletonList(pravegaTableHandle.getObjectName());
+                    () -> new IllegalArgumentException("no args for multi source table found"))
+                    : Collections.singletonList(pravegaTableHandle.getObjectName());
 
         AtomicInteger splitCounter = new AtomicInteger(0);
         ReaderType readerType = readerType(properties);
@@ -187,16 +187,17 @@ public class PravegaSplitManager
                 splits.add(split);
                 splitCounter.incrementAndGet();
                 split = splitSupplier.get();
-            } while (split != null);
+            }
+            while (split != null);
         });
 
         log.info("created " + splitCounter.get() + " stream splits of type " + readerType);
     }
 
     Supplier<PravegaSplit> splitSupplier(final ReaderType readerType,
-                                         final PravegaTableHandle tableHandle,
-                                         final String stream,
-                                         final StreamCutSupplier streamCutSupplier)
+            final PravegaTableHandle tableHandle,
+            final String stream,
+            final StreamCutSupplier streamCutSupplier)
     {
         return () -> {
             StreamCutRange range = streamCutSupplier.get();
@@ -271,9 +272,9 @@ public class PravegaSplitManager
 //    }
 
     Supplier<PravegaSplit> segmentPerSplitSupplier(final ReaderType readerType,
-                                                   final PravegaTableHandle tableHandle,
-                                                   final String stream,
-                                                   final StreamCutSupplier streamCutSupplier)
+            final PravegaTableHandle tableHandle,
+            final String stream,
+            final StreamCutSupplier streamCutSupplier)
     {
         final AtomicReference<Iterator<SegmentRange>> iterator = new AtomicReference<>();
 

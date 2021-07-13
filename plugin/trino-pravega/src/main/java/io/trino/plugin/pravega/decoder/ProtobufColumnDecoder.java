@@ -16,24 +16,24 @@
 
 package io.trino.plugin.pravega.decoder;
 
-import io.trino.spi.type.Type;
-import io.trino.decoder.DecoderColumnHandle;
-import io.trino.decoder.FieldValueProvider;
-import io.trino.spi.TrinoException;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Descriptors;
 import com.google.protobuf.DynamicMessage;
 import io.airlift.slice.Slice;
 import io.airlift.slice.Slices;
+import io.trino.decoder.DecoderColumnHandle;
+import io.trino.decoder.FieldValueProvider;
+import io.trino.spi.TrinoException;
+import io.trino.spi.type.Type;
 
 import java.util.Map;
 
+import static io.airlift.slice.Slices.utf8Slice;
+import static io.trino.decoder.DecoderErrorCode.DECODER_CONVERSION_NOT_SUPPORTED;
+import static io.trino.plugin.pravega.util.PravegaSchemaUtils.NESTED_RECORD_SEPARATOR;
 import static io.trino.spi.type.StandardTypes.VARBINARY;
 import static io.trino.spi.type.StandardTypes.VARCHAR;
 import static io.trino.spi.type.Varchars.truncateToLength;
-import static io.trino.decoder.DecoderErrorCode.DECODER_CONVERSION_NOT_SUPPORTED;
-import static io.trino.plugin.pravega.util.PravegaSchemaUtils.NESTED_RECORD_SEPARATOR;
-import static io.airlift.slice.Slices.utf8Slice;
 import static java.lang.String.format;
 
 public class ProtobufColumnDecoder

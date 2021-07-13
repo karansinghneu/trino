@@ -15,38 +15,37 @@
  */
 package io.trino.plugin.pravega.integration;
 
-import io.airlift.json.JsonCodec;
-import io.airlift.log.Logger;
-import io.airlift.log.Logging;
-import io.trino.Session;
-import io.trino.metadata.QualifiedObjectName;
-import io.trino.metadata.Metadata;
-import io.trino.spi.connector.SchemaTableName;
-import io.trino.testing.QueryRunner;
-import io.trino.testing.DistributedQueryRunner;
-import io.trino.testing.TestingTrinoClient;
-import io.trino.plugin.tpch.TpchPlugin;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableMap;
-import io.trino.testing.tpch.IndexedTpchPlugin;
-import io.trino.tpch.TpchTable;
+import io.airlift.json.JsonCodec;
+import io.airlift.log.Logger;
+import io.airlift.log.Logging;
 import io.pravega.client.admin.StreamManager;
+import io.trino.Session;
+import io.trino.metadata.Metadata;
+import io.trino.metadata.QualifiedObjectName;
 import io.trino.plugin.pravega.PravegaPlugin;
 import io.trino.plugin.pravega.PravegaStreamDescription;
 import io.trino.plugin.pravega.PravegaTableDescriptionSupplier;
 import io.trino.plugin.pravega.PravegaTableName;
+import io.trino.plugin.tpch.TpchPlugin;
+import io.trino.spi.connector.SchemaTableName;
+import io.trino.testing.DistributedQueryRunner;
+import io.trino.testing.QueryRunner;
+import io.trino.testing.TestingTrinoClient;
+import io.trino.tpch.TpchTable;
 
 import java.net.URI;
 import java.util.Map;
 import java.util.Optional;
 
 import static io.airlift.testing.Closeables.closeAllSuppress;
-import static io.trino.testing.TestingSession.testSessionBuilder;
-import static io.trino.plugin.tpch.TpchMetadata.TINY_SCHEMA_NAME;
 import static io.airlift.units.Duration.nanosSince;
 import static io.trino.plugin.pravega.integration.PravegaTestUtils.getKvStreamDesc;
 import static io.trino.plugin.pravega.integration.PravegaTestUtils.getStreamDesc;
+import static io.trino.plugin.tpch.TpchMetadata.TINY_SCHEMA_NAME;
+import static io.trino.testing.TestingSession.testSessionBuilder;
 import static java.util.Locale.ENGLISH;
 import static java.util.concurrent.TimeUnit.SECONDS;
 

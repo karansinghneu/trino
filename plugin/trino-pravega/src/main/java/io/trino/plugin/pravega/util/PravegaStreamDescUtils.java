@@ -16,13 +16,13 @@
 
 package io.trino.plugin.pravega.util;
 
-import io.trino.spi.type.Type;
 import com.google.protobuf.Descriptors;
-import io.trino.plugin.pravega.PravegaStreamFieldDescription;
-import io.trino.plugin.pravega.ProtobufCommon;
 import io.pravega.schemaregistry.contract.data.SchemaWithVersion;
 import io.pravega.schemaregistry.contract.data.SerializationFormat;
 import io.pravega.schemaregistry.serializer.json.schemas.JSONSchema;
+import io.trino.plugin.pravega.PravegaStreamFieldDescription;
+import io.trino.plugin.pravega.ProtobufCommon;
+import io.trino.spi.type.Type;
 import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.NumberSchema;
 import org.everit.json.schema.ObjectSchema;
@@ -34,13 +34,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static io.trino.plugin.pravega.util.PravegaSchemaUtils.AVRO;
+import static io.trino.plugin.pravega.util.PravegaSchemaUtils.NESTED_RECORD_SEPARATOR;
 import static io.trino.spi.type.BigintType.BIGINT;
 import static io.trino.spi.type.BooleanType.BOOLEAN;
 import static io.trino.spi.type.DoubleType.DOUBLE;
 import static io.trino.spi.type.VarbinaryType.VARBINARY;
 import static io.trino.spi.type.VarcharType.createUnboundedVarcharType;
-import static io.trino.plugin.pravega.util.PravegaSchemaUtils.AVRO;
-import static io.trino.plugin.pravega.util.PravegaSchemaUtils.NESTED_RECORD_SEPARATOR;
 import static org.apache.avro.Schema.Type.RECORD;
 
 /**

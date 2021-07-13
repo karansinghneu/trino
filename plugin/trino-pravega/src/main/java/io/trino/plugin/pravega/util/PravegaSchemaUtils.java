@@ -16,9 +16,9 @@
 
 package io.trino.plugin.pravega.util;
 
+import com.google.common.io.CharStreams;
 import io.airlift.log.Logger;
 import io.trino.spi.TrinoException;
-import com.google.common.io.CharStreams;
 
 import java.io.FileInputStream;
 import java.io.IOException;

@@ -19,18 +19,6 @@
  */
 package io.trino.plugin.pravega.integration;
 
-import io.trino.Session;
-import io.trino.client.Column;
-import io.trino.client.QueryData;
-import io.trino.client.QueryStatusInfo;
-import io.trino.spi.type.TimeZoneKey;
-import io.trino.spi.type.Type;
-import io.trino.spi.type.VarcharType;
-import io.trino.spi.type.Varchars;
-import io.trino.server.testing.TestingTrinoServer;
-import io.trino.spi.TrinoWarning;
-import io.trino.testing.AbstractTestingTrinoClient;
-import io.trino.testing.ResultsSession;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
@@ -42,12 +30,21 @@ import io.pravega.client.stream.EventWriterConfig;
 import io.pravega.client.stream.ScalingPolicy;
 import io.pravega.client.stream.Serializer;
 import io.pravega.client.stream.StreamConfiguration;
+import io.trino.Session;
+import io.trino.client.Column;
+import io.trino.client.QueryData;
+import io.trino.client.QueryStatusInfo;
+import io.trino.server.testing.TestingTrinoServer;
+import io.trino.spi.type.TimeZoneKey;
+import io.trino.spi.type.Type;
+import io.trino.spi.type.VarcharType;
+import io.trino.testing.AbstractTestingTrinoClient;
+import io.trino.testing.ResultsSession;
 
 import java.io.UncheckedIOException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -55,20 +52,12 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.google.common.base.Preconditions.checkState;
 import static io.trino.spi.type.BigintType.BIGINT;
 import static io.trino.spi.type.BooleanType.BOOLEAN;
-import static io.trino.spi.type.DateTimeEncoding.unpackMillisUtc;
 import static io.trino.spi.type.DateType.DATE;
 import static io.trino.spi.type.DoubleType.DOUBLE;
 import static io.trino.spi.type.IntegerType.INTEGER;
-import static io.trino.spi.type.TimeType.TIME;
-import static io.trino.spi.type.TimeWithTimeZoneType.TIME_WITH_TIME_ZONE;
-import static io.trino.spi.type.TimestampType.TIMESTAMP;
-import static io.trino.spi.type.TimestampWithTimeZoneType.TIMESTAMP_WITH_TIME_ZONE;
-//import static io.trino.type.DateTimeOperators.parseTimeLiteral;
-import static io.trino.type.DateTimes.parseTimestampWithTimeZone;
-//import static io.trino.type.DateTimes.parseTimestampWithoutTimeZone;
-import static com.google.common.base.Preconditions.checkState;
 import static java.util.Objects.requireNonNull;
 
 public class PravegaLoader

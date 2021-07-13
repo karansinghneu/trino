@@ -21,6 +21,7 @@ import java.util.List;
 public class KeyValueTable
 {
     private static final List<String> keyValueTables;
+
     static {
         keyValueTables = new ArrayList<>();
         keyValueTables.add("employee");

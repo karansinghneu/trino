@@ -18,7 +18,6 @@ package io.trino.plugin.pravega;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.collect.ImmutableList;
 import io.trino.spi.HostAddress;
 import io.trino.spi.connector.ConnectorSplit;
 
@@ -91,18 +90,6 @@ public class PravegaSplit
     {
         return schema;
     }
-
-//    @Override
-//    public NodeSelectionStrategy getNodeSelectionStrategy()
-//    {
-//        return NO_PREFERENCE;
-//    }
-//
-//    @Override
-//    public List<HostAddress> getPreferredNodes(List<HostAddress> sortedCandidates)
-//    {
-//        return ImmutableList.of();
-//    }
 
     @JsonProperty
     public String getschemaRegistryGroupId()

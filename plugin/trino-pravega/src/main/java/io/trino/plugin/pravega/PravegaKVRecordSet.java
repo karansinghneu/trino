@@ -16,20 +16,20 @@
 
 package io.trino.plugin.pravega;
 
+import com.google.common.collect.ImmutableList;
 import io.airlift.log.Logger;
-import io.trino.spi.type.Type;
+import io.pravega.client.tables.IteratorItem;
+import io.pravega.client.tables.KeyValueTable;
+import io.pravega.client.tables.KeyValueTableClientConfiguration;
+import io.pravega.client.tables.TableEntry;
+import io.pravega.common.util.AsyncIterator;
 import io.trino.decoder.DecoderColumnHandle;
 import io.trino.plugin.pravega.decoder.DecodableEvent;
 import io.trino.plugin.pravega.decoder.KVSerializer;
 import io.trino.plugin.pravega.decoder.MultiSourceRowDecoder;
 import io.trino.spi.connector.RecordCursor;
 import io.trino.spi.connector.RecordSet;
-import com.google.common.collect.ImmutableList;
-import io.pravega.client.tables.IteratorItem;
-import io.pravega.client.tables.KeyValueTable;
-import io.pravega.client.tables.KeyValueTableClientConfiguration;
-import io.pravega.client.tables.TableEntry;
-import io.pravega.common.util.AsyncIterator;
+import io.trino.spi.type.Type;
 
 import java.util.Iterator;
 import java.util.List;

@@ -17,11 +17,11 @@
 package io.trino.plugin.pravega;
 
 import io.airlift.log.Logger;
-import io.trino.plugin.pravega.decoder.BytesEvent;
-import io.trino.plugin.pravega.decoder.DecodableEvent;
 import io.pravega.client.batch.SegmentIterator;
 import io.pravega.client.batch.SegmentRange;
 import io.pravega.client.stream.impl.ByteBufferSerializer;
+import io.trino.plugin.pravega.decoder.BytesEvent;
+import io.trino.plugin.pravega.decoder.DecodableEvent;
 
 import java.nio.ByteBuffer;
 import java.util.Iterator;

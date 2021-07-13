@@ -16,19 +16,19 @@
 
 package io.trino.plugin.pravega;
 
+import com.google.inject.Injector;
+import com.google.inject.Scopes;
 import io.airlift.bootstrap.Bootstrap;
 import io.airlift.bootstrap.LifeCycleManager;
 import io.airlift.json.JsonModule;
-import io.trino.spi.type.TypeManager;
-import io.trino.spi.connector.ConnectorHandleResolver;
+import io.trino.plugin.base.classloader.ClassLoaderSafeConnectorMetadata;
+import io.trino.plugin.base.classloader.ClassLoaderSafeConnectorSplitManager;
 import io.trino.spi.NodeManager;
 import io.trino.spi.connector.Connector;
 import io.trino.spi.connector.ConnectorContext;
 import io.trino.spi.connector.ConnectorFactory;
-import io.trino.plugin.base.classloader.ClassLoaderSafeConnectorMetadata;
-import io.trino.plugin.base.classloader.ClassLoaderSafeConnectorSplitManager;
-import com.google.inject.Injector;
-import com.google.inject.Scopes;
+import io.trino.spi.connector.ConnectorHandleResolver;
+import io.trino.spi.type.TypeManager;
 
 import java.util.Map;
 import java.util.Optional;
