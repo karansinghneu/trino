@@ -150,7 +150,6 @@ public class PravegaSplitManager
             PravegaTableHandle pravegaTableHandle,
             ImmutableList.Builder<ConnectorSplit> splits)
     {
-        // TODO: Enable begin and end cuts to be configurable: https://github.com/pravega/pravega-sql/issues/24
         List<String> sourceStreams = multiSourceStream(pravegaTableHandle)
                 ? pravegaTableHandle.getOjectArgs().orElseThrow(
                     () -> new IllegalArgumentException("no args for multi source table found"))
@@ -169,10 +168,6 @@ public class PravegaSplitManager
                 case SEGMENT_RANGE:
                     splitSupplier = splitSupplier(readerType, pravegaTableHandle, stream, streamCutSupplier);
                     break;
-
-//                case SINGLE_GROUP_EVENT_STREAM:
-//                    splitSupplier = groupedReaderSplitSupplier(readerType, pravegaTableHandle, stream, streamCutSupplier, properties.getGroupedEventSplits());
-//                    break;
 
                 case SEGMENT_RANGE_PER_SPLIT:
                     splitSupplier = segmentPerSplitSupplier(readerType, pravegaTableHandle, stream, streamCutSupplier);
@@ -217,59 +212,6 @@ public class PravegaSplitManager
                     getNodeAddresses());
         };
     }
-
-//    Supplier<PravegaSplit> groupedReaderSplitSupplier(final ReaderType readerType,
-//                                                      final PravegaTableHandle tableHandle,
-//                                                      final String stream,
-//                                                      final StreamCutSupplier streamCutSupplier,
-//                                                      final int numSplits)
-//    {
-//        StreamCutRange first = streamCutSupplier.get();
-//        StreamCutRange last = null;
-//        do {
-//            StreamCutRange range = streamCutSupplier.get();
-//            if (range == null) {
-//                break;
-//            }
-//            last = range;
-//        } while (true);
-//
-//        if (last == null) {
-//            throw new IllegalStateException("no end split");
-//        }
-//        StreamCutRange range = new StreamCutRange(first.getStart(), last.getEnd());
-//
-//        log.info(readerType + " split " + range);
-//        String readerGroup = UUID.randomUUID().toString();
-//
-//        final ReaderArgs readerArgs =
-//                new ReaderArgs(tableHandle.getSchemaName(), stream, range, readerGroup);
-//        ReaderGroupConfig config =
-//                ReaderGroupConfig.builder()
-//                        .stream(scopedName(readerArgs.getScope(), readerArgs.getStream()),
-//                                readerArgs.getStreamCutRange().getStart(),
-//                                readerArgs.getStreamCutRange().getEnd())
-//                        .build();
-//
-//        log.info("create reader group " + readerGroup);
-//        streamReaderManager.readerGroupManager(
-//                tableHandle.getSchemaName()).createReaderGroup(readerGroup, config);
-//
-//        final AtomicInteger splitCounter = new AtomicInteger();
-//
-//        return () -> {
-//            if (splitCounter.getAndIncrement() == numSplits) {
-//                return null;
-//            }
-//            return new PravegaSplit(
-//                    connectorId,
-//                    ObjectType.STREAM,
-//                    Collections.singletonList(tableHandle.getSchema().get(0)),
-//                    readerType,
-//                    serialize(readerArgs),
-//                    tableHandle.getSchemaRegistryGroupId());
-//        };
-//    }
 
     Supplier<PravegaSplit> segmentPerSplitSupplier(final ReaderType readerType,
             final PravegaTableHandle tableHandle,

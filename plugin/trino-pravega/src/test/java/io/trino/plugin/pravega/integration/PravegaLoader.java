@@ -96,11 +96,11 @@ public class PravegaLoader
     private final Random random = new Random();
 
     public PravegaLoader(URI controller,
-                         StreamManager streamManager,
-                         String schema,
-                         String stream,
-                         TestingTrinoServer prestoServer,
-                         Session defaultSession)
+            StreamManager streamManager,
+            String schema,
+            String stream,
+            TestingTrinoServer prestoServer,
+            Session defaultSession)
     {
         super(prestoServer, defaultSession);
 
@@ -139,9 +139,6 @@ public class PravegaLoader
         {
             this.timeZoneKey = session.getTimeZoneKey();
         }
-
-//        @Override
-//        public void setWarnings(List<TrinoWarning> warnings) {}
 
         @Override
         public void addResults(QueryStatusInfo statusInfo, QueryData data)
@@ -195,15 +192,6 @@ public class PravegaLoader
             if (DATE.equals(type)) {
                 return value;
             }
-//            if (TIME.equals(type)) {
-//                return ISO8601_FORMATTER.format(Instant.ofEpochMilli(parseTimeLiteral(timeZoneKey, (String) value)));
-//            }
-//            if (TIMESTAMP.equals(type)) {
-//                return ISO8601_FORMATTER.format(Instant.ofEpochMilli(parseTimestampWithoutTimeZone(timeZoneKey, (String) value)));
-//            }
-//            if (TIME_WITH_TIME_ZONE.equals(type) || TIMESTAMP_WITH_TIME_ZONE.equals(type)) {
-//                return ISO8601_FORMATTER.format(Instant.ofEpochMilli(unpackMillisUtc(parseTimestampWithTimeZone(timeZoneKey, (String) value))));
-//            }
             throw new AssertionError("unhandled type: " + type);
         }
     }

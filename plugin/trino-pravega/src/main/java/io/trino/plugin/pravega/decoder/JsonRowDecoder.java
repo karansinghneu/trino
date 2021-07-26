@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkState;
-// import io.trino.plugin.pravega.TypedRecordValue;
 
 public class JsonRowDecoder
         implements EventDecoder

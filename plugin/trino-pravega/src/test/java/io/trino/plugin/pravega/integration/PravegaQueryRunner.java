@@ -66,17 +66,7 @@ public final class PravegaQueryRunner
     {
         DistributedQueryRunner queryRunner = null;
         try {
-//            Session session = testSessionBuilder()
-//                    .setCatalog("tpch_indexed")
-//                    .setSchema(TINY_SCHEMA_NAME)
-//                    .build();
-//
-//            DistributedQueryRunner queryRunner = DistributedQueryRunner.builder(session).build();
-//
-//            queryRunner.installPlugin(new IndexedTpchPlugin(INDEX_SPEC));
-//            queryRunner.createCatalog("tpch_indexed", "tpch_indexed");
             queryRunner = DistributedQueryRunner.builder(createSession()).setNodeCount(2).build();
-//            queryRunner = new DistributedQueryRunner(createSession(), 2);
 
             queryRunner.installPlugin(new TpchPlugin());
             queryRunner.createCatalog("tpch", "tpch");

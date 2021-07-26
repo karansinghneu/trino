@@ -40,40 +40,13 @@ public class TestPravegaDistributed
         return PravegaQueryRunner.createQueryRunner(pravega.getController(), TpchTable.getTables(), java.util.Collections.emptyList());
     }
 
-//    @Override
-//    protected DistributedQueryRunner createQueryRunner()
-//            throws Exception
-//    {
-//        Session session = testSessionBuilder()
-//                .setCatalog("tpch_indexed")
-//                .setSchema(TINY_SCHEMA_NAME)
-//                .build();
-//
-//        DistributedQueryRunner queryRunner = DistributedQueryRunner.builder(session).build();
-//
-//        queryRunner.installPlugin(new IndexedTpchPlugin(INDEX_SPEC));
-//        queryRunner.createCatalog("tpch_indexed", "tpch_indexed");
-//        return queryRunner;
-//    }
-
     public TestPravegaDistributed(EmbeddedPravega pravega)
     {
-//        super(() -> PravegaQueryRunner.createQueryRunner(pravega.getController(), TpchTable.getTables(), java.util.Collections.emptyList()));
         this.pravega = pravega;
     }
 
-//    // non-passing tests
-//    @Override
-//    public void testAccessControl(){}
-//
-//    @Override
-//    public void testDescribeOutputNonSelect(){}
-
     @Override
     public void testInformationSchemaUppercaseName() {}
-
-//    @Override
-//    public void testShowTablesLikeWithEscape() {}
 
     @AfterClass(alwaysRun = true)
     public void destroy()

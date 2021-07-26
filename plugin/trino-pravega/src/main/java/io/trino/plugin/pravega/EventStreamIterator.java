@@ -44,42 +44,13 @@ public class EventStreamIterator
         this.readTimeoutMs = properties.getEventReadTimeoutMs();
     }
 
-    private void init()
-    {
-//        log.info("open iterator for stream " + readerArgs);
-//        String readerGroupName = readerArgs.getReaderGroup();
-//        if (readerArgs.getReaderGroup() == null) {
-//            readerGroupName = "reader-group-" + UUID.randomUUID().toString();
-//            ReaderGroupConfig config =
-//                    ReaderGroupConfig.builder()
-//                            .stream(scopedName(readerArgs.getScope(), readerArgs.getStream()),
-//                                    readerArgs.getStreamCutRange().getStart(),
-//                                    readerArgs.getStreamCutRange().getEnd())
-//                            .build();
-//            log.info("create reader group " + readerGroupName);
-//            segmentManager.readerGroupManager(
-//                    readerArgs.getScope()).createReaderGroup(readerGroupName, config);
-//        }
-//
-//        String readerId = UUID.randomUUID().toString();
-//        log.info("create reader " + readerId);
-//        reader = segmentManager.getEventStreamClientFactory(readerArgs.getScope())
-//                .createReader(readerId,
-//                        readerGroupName,
-//                        new ByteBufferSerializer(),
-//                        ReaderConfig.builder().build());
-    }
-
     private boolean _next()
     {
-        if (reader == null) {
-            init();
-        }
-
         EventRead<ByteBuffer> read;
         do {
             read = reader.readNextEvent(readTimeoutMs);
-        } while (read.isCheckpoint());
+        }
+        while (read.isCheckpoint());
         event = read.getEvent();
         return event != null;
     }
