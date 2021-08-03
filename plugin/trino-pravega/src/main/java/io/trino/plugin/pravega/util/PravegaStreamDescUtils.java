@@ -227,7 +227,7 @@ public class PravegaStreamDescUtils
 
             case MAP:
             case ARRAY:
-                // TODO: ^^ handle these https://github.com/pravega/pravega-sql/issues/65
+                // TODO: ^^ handle these https://github.com/pravega/presto-connector/issues/22
 
             case RECORD:
             case ENUM:

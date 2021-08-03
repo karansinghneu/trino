@@ -105,7 +105,7 @@ public class PravegaTableDescriptionSupplier
         // there will be many successive calls to listSchemas + listTables in short time period
         // do not reach out to pravega each time as it is unlikely things would have changed
         // enhancement issue - can we determine if there are changes/removals and selectively update?
-        // https://github.com/StreamingDataPlatform/pravega-sql/issues/101
+        // https://github.com/pravega/presto-connector/issues/30
         this.schemaCache = CacheBuilder.newBuilder()
                 .expireAfterWrite(pravegaConnectorConfig.getTableCacheExpireSecs(), TimeUnit.SECONDS)
                 .build();
@@ -449,7 +449,7 @@ public class PravegaTableDescriptionSupplier
             int kvIdx)
     {
         /*
-            TODO: auto-detect https://github.com/pravega/pravega-sql/issues/58
+            TODO: auto-detect https://github.com/pravega/presto-connector/issues/20
             (1) no schema registry.
             (2) Register and evolve schemas in registry but do not use registry client while writing data
             (3) Register schemas in the registry and use registry client to encode schema Id with payload

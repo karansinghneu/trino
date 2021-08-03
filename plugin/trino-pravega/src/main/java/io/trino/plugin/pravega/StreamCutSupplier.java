@@ -43,7 +43,7 @@ public class StreamCutSupplier
     {
         if (segmentManager.streamExists(scope, streamCutName(stream))) {
             // for now, read stream cuts from internal stream
-            // https://github.com/pravega/pravega-sql/issues/24
+            // https://github.com/pravega/presto-connector/issues/21
             this.segmentManager = segmentManager;
 
             this.rangeIterator = segmentManager.getSegments(scope, streamCutName(stream), null, null).getIterator();
