@@ -59,7 +59,7 @@ public class AvroSerializer
         {
             try (DataFileStream<GenericRecord> dataFileReader =
                     new DataFileStream<>(new ByteBufferInputStream(serializedValue), datumReader)) {
-                // TODO: need to figure out how to auto-detect format of avro data
+                // TODO: need to figure out how to auto-detect format of avro data https://github.com/pravega/presto-connector/issues/47
                 // for e.g, is schema provided for every row? (this is how the normal presto avro decoder takes it)
                 // i would think more typically case would be that schema defined once and thus schema not provided
                 // in every rows data
